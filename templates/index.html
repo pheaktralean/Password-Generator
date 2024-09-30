@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        <title>Smart Password Generator</title>
+        <style>
+            body{
+                background-color: powderblue;
+            }
+
+            h3{
+                color: darkblue;
+                font-weight: bold;
+            }
+            .container{
+                background-color: rgb(255,200,200);
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid black;
+                border-radius: 10px;
+            }
+            label{
+                display: block;
+                margin-bottom: 10px;
+            }
+            input[type="number"]{
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 20px;
+            }
+            .btn{
+                padding: 10px;
+                background-color: lightblue;
+                color: white;
+                border:none;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+
+            #generated-password {
+                margin-top: 20px;
+                font-size: 1.2em;
+                color: green;
+                word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Smart Password Generator</h3>
+        <div class="container">
+            <h4>Select An Option</h4>
+            <div>
+                <label>
+                    <input type="radio" name="password_type" value="default" checked>
+                    Generate default password (8 characters, including upper, lower, number, special)
+                </label>
+                <label>
+                    <input type="radio" name="password_type" value="custom">
+                    Generate custom password (you customize the number of each type of character)
+                </label>
+            </div>
+
+            <div id="custom-options" style="display: none;">
+                <h4>Customize your password:</h4>
+                <label for="lower-count">Number of lowercase letters:</label>
+                <input type="number" id="lower-count" value="0" min="0">
+
+                <label for="upper-count">Number of uppercase letters:</label>
+                <input type="number" id="upper-count" value="0" min="0">
+
+                <label for="number-count">Number of numbers:</label>
+                <input type="number" id="number-count" value="0" min="0">
+
+                <label for="special-count">Number of special characters:</label>
+                <input type="number" id="special-count" value="0" min="0">
+            </div>
+
+            <button class="btn" id="generate-btn">Generate Password</button>
+
+        <div id="generated-password"></div>
+
+        </div>
+
+        <script>
+            const passwordTypeInputs = document.querySelectAll('input[name="password_type"])
+            const customOptions = document.getElementById('custom-options');
+            const generateBtn = document.getElementById('generate-btn');
+            const generatePasswordDiv = document.getElementById('generated-password');
+
+            passwordTypeInputs.forEach(input => {
+                input.addEventListener('change', function (){
+                    if(this.value == 'custom'){
+                        customOptions.style.display = 'block';
+                    }
+                    else{
+                        customOptions.style.display = 'none';
+                    }
+                });
+            });
+
+            generateBtn.addEventListener('click', () => {
+                const selectedType = document.querySelector('input[name="password"]:checked).value;
+
+                let data = {};
+                if(selectedType === 'default'){
+                    data = { type: 'default'}
+                }
+                else{
+                    const lowerCount = parseInt(document.getElementById('lower-count').value);
+                    const upperCount = parseInt(document.getElementById('upper-count').value);
+                    const numberCount = parseInt(document.getElementById('number-count').value);
+                    const specialCount = parseInt(document.getElementById('special-count').value);
+
+                    data = {
+                        type: 'custom'
+                        lower_count: lowerCount,
+                        upper_count: upperCount,
+                        number_count: numberCount,
+                        special_count: specialCount,
+                    };
+                }
+                fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    generatedPasswordDiv.textContent = 'Generated Password: ' + data.password;
+                })
+                .catch(error => {
+                    generatedPasswordDiv.textContent = 'Error generating password';
+                });
+            });
+        </script>
+
+    </body>
+</html>
