@@ -9,21 +9,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if(value > 30){
             lengthInput.value = 30;
             rangeInput.value = 30;
-        } else if(value < 1){
+        } else if(value < 0){
             lengthInput.value = 8;
             rangeInput.value = 8;
         } else{
+
             rangeInput.value = value;
+            lengthInput.value = value;
         }
     }
 
     lengthInput.addEventListener('input', function(){
-        let value = parseInt(this.value, 10) || 8;
+        let value = parseInt(this.value, 10);
         adjustPasswordLength(value);
     });
 
     rangeInput.addEventListener('input', function(){
-        let value = parseInt(this.value, 10) || 8;
+        let value = parseInt(this.value, 10);
         adjustPasswordLength(value);
     });
 
