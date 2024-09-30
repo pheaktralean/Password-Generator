@@ -1,51 +1,62 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import random
-
+import string
+import json
 app = Flask(__name__)
 
-# store the characters in lists
-lower_chars = ['a','b','c','d','e','f','g','h','i','j',
-                'k','l','m','n','o','p','q','r','s','t','u',
-                'v','w','x','y','z']
-upper_chars = ['A', 'B', 'C', 'D','E','F','G','H','I','J',
-                'K','L','M','N','O','P','Q','R','S','T','U',
-                'V','W','X','Y','Z']
-numbers = ['0','1','2','3','4','5','6','7','8','9']
-special_chars = ['!', '@','#','$','%','&','*']
+# Load Configuration from JSON file
+with open('password_generator_config.json') as config_file:
+    config = json.load(config_file)
+
+# Store the characters in string from the config file
+lower_chars = config['character_sets']['lowercase']['chars']
+upper_chars = config['character_sets']['uppercase']['chars']
+numbers = config['character_sets']['numbers']['chars']
+symbols = config['character_sets']['symbols']['chars']
+
 
 # default password generator function
-def default_password_generator():
-    password = random.choice(lower_chars) + random.choice(upper_chars) + random.choice(numbers) + random.choice(
-        special_chars)
-    password += ''.join(random.choices(lower_chars + upper_chars + numbers + special_chars, k=4))
-    return ''.join(random.sample(password, len(password)))
+def password_generator(length=8, use_uppercase=True, use_lowercase=True, use_numbers=True, use_symbols=True):
+    char_pool = ''
+    if use_uppercase:
+        char_pool += upper_chars
+    if use_lowercase:
+        char_pool += lower_chars
+    if use_numbers:
+        char_pool += numbers
+    if use_symbols:
+        char_pool += symbols
 
-# custom password generator function
-def custom_password_generator(lower_count, upper_count, number_count, special_count):
-    password = ''
-    password += ''.join(random.choices(lower_chars, k=lower_count))
-    password += ''.join(random.choices(upper_chars, k=upper_count))
-    password += ''.join(random.choices(numbers, k=number_count))
-    password += ''.join(random.choices(special_chars, k=special_count))
-    return ''.join(random.sample(password, len(password)))
+    password = ''.join(random.choice(char_pool) for _ in range(length))
+    return password
+
+
+# (password_generator(length=12, use_uppercase=True, use_lowercase=True, use_numbers=True, use_symbols=True))
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 # API route for generating the password
-@app.route('/generate-password', methods=['GET'])
+@app.route('/generate-password', methods=['POST'])
 def generate_password():
     data = request.json
-    if data['type'] == 'default':
-        password = default_password_generator()
-    elif data['type'] == 'custom':
-        lower_count = data['lower_count']
-        upper_count = data['upper_count']
-        number_count = data['number_count']
-        special_count = data['special_count']
-        password = custom_password_generator(lower_count, upper_count, number_count, special_count)
-    return jsonify({'password': password})
+    length = data.get('length', config['default_settings']['length'])  # Use default from config
+
+    # Get character type preferences by user
+    use_uppercase = data.get('use_uppercase', config['default_settings']['use_uppercase'])
+    use_lowercase = data.get('use_lowercase', config['default_settings']['use_lowercase'])
+    use_numbers = data.get('use_numbers', config['default_settings']['use_numbers'])
+    use_symbols = data.get('use_symbols', config['default_settings']['use_symbols'])
+
+    try:
+        # Generate the password
+        password = password_generator(length, use_uppercase, use_lowercase, use_numbers, use_symbols)
+        return jsonify({'password': password})
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

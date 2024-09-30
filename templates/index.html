@@ -4,142 +4,50 @@
         <meta charset = "UTF-8">
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
         <title>Smart Password Generator</title>
-        <style>
-            body{
-                background-color: powderblue;
-            }
-
-            h3{
-                color: darkblue;
-                font-weight: bold;
-            }
-            .container{
-                background-color: rgb(255,200,200);
-                max-width: 500px;
-                margin: 0 auto;
-                padding: 20px;
-                border: 1px solid black;
-                border-radius: 10px;
-            }
-            label{
-                display: block;
-                margin-bottom: 10px;
-            }
-            input[type="number"]{
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 20px;
-            }
-            .btn{
-                padding: 10px;
-                background-color: lightblue;
-                color: white;
-                border:none;
-                cursor: pointer;
-                border-radius: 5px;
-            }
-            .btn:hover {
-                background-color: #0056b3;
-            }
-
-            #generated-password {
-                margin-top: 20px;
-                font-size: 1.2em;
-                color: green;
-                word-wrap: break-word;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </head>
     <body>
         <h3>Smart Password Generator</h3>
         <div class="container">
-            <h4>Select An Option</h4>
-            <div>
-                <label>
-                    <input type="radio" name="password_type" value="default" checked>
-                    Generate default password (8 characters, including upper, lower, number, special)
-                </label>
-                <label>
-                    <input type="radio" name="password_type" value="custom">
-                    Generate custom password (you customize the number of each type of character)
-                </label>
+            <h4>Customize your password</h4>
+            <hr class="line">
+
+            <!--Password length input-->
+            <div class="length">
+                <label for="pwdlength">Length:</label><br>
+                <input type="number" id="pwdlength" name="pwdlength" min="1" max="30" value="8">
+                <br>
+                <label for="rangeInput"></label>
+                <input type="range" id="rangeInput" min="1" max="30" value="8">
             </div>
 
-            <div id="custom-options" style="display: none;">
-                <h4>Customize your password:</h4>
-                <label for="lower-count">Number of lowercase letters:</label>
-                <input type="number" id="lower-count" value="0" min="0">
-
-                <label for="upper-count">Number of uppercase letters:</label>
-                <input type="number" id="upper-count" value="0" min="0">
-
-                <label for="number-count">Number of numbers:</label>
-                <input type="number" id="number-count" value="0" min="0">
-
-                <label for="special-count">Number of special characters:</label>
-                <input type="number" id="special-count" value="0" min="0">
+            <!-- Character type selection checkboxes -->
+            <div class="custom-checkbox">
+                <input type="checkbox" id="uppercase" name="uppercase" class="checkbox" checked>
+                <label for="uppercase">Uppercase</label>
+                <br>
+                <input type="checkbox" id="lowercase" name="lowercase" class="checkbox" checked>
+                <label for="lowercase">Lowercase</label>
+                <br>
+                <input type="checkbox" id="numbers" name="numbers" class="checkbox" checked>
+                <label for="numbers">Numbers</label>
+                <br>
+                <input type="checkbox" id="symbols" name="symbol" class="checkbox" checked>
+                <label for="symbols">Symbols</label>
             </div>
-
-            <button class="btn" id="generate-btn">Generate Password</button>
-
-        <div id="generated-password"></div>
 
         </div>
 
-        <script>
-            const passwordTypeInputs = document.querySelectAll('input[name="password_type"])
-            const customOptions = document.getElementById('custom-options');
-            const generateBtn = document.getElementById('generate-btn');
-            const generatePasswordDiv = document.getElementById('generated-password');
+        <!-- Password display and action buttons -->
+        <div class="password-container">
+            <div id="password-display" class="password">pass1234</div>
+            <button class="icon" id="copy-icon">⧉</button>
+            <button class="icon" id="generate-icon">&#x21bb;</button>
 
-            passwordTypeInputs.forEach(input => {
-                input.addEventListener('change', function (){
-                    if(this.value == 'custom'){
-                        customOptions.style.display = 'block';
-                    }
-                    else{
-                        customOptions.style.display = 'none';
-                    }
-                });
-            });
+        </div>
+        <button class="button" id="copy-button">Copy Password</button>
 
-            generateBtn.addEventListener('click', () => {
-                const selectedType = document.querySelector('input[name="password"]:checked).value;
-
-                let data = {};
-                if(selectedType === 'default'){
-                    data = { type: 'default'}
-                }
-                else{
-                    const lowerCount = parseInt(document.getElementById('lower-count').value);
-                    const upperCount = parseInt(document.getElementById('upper-count').value);
-                    const numberCount = parseInt(document.getElementById('number-count').value);
-                    const specialCount = parseInt(document.getElementById('special-count').value);
-
-                    data = {
-                        type: 'custom'
-                        lower_count: lowerCount,
-                        upper_count: upperCount,
-                        number_count: numberCount,
-                        special_count: specialCount,
-                    };
-                }
-                fetch('/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    generatedPasswordDiv.textContent = 'Generated Password: ' + data.password;
-                })
-                .catch(error => {
-                    generatedPasswordDiv.textContent = 'Error generating password';
-                });
-            });
-        </script>
-
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 </html>
