@@ -204,7 +204,7 @@ input:checked + label:after {
     }
 
     .button {
-        width: 85%;
+        width: 88%;
         height: 50px;
         font-size: 14px;
     }
