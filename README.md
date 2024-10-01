@@ -9,7 +9,7 @@
   <ul>
     <li>Uppercase Letters</li>
     <li>Lowercase Letters</li>
-    <li><Numbers/li>
+    <li><Numbers</li>
     <li>Symbols</li>
   </ul>
   </li>
