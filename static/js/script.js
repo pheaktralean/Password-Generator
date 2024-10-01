@@ -2,14 +2,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sync the length picked by user:
     // if user choose length from range -> adjust the textbox
     // if user choose length from the text -> adjust the range
-    const lengthInput = document.getElementById('pwdlength');
+    // const lengthInput = document.getElementById('pwdlength');
     const rangeInput = document.getElementById('rangeInput');
-
-    function adjustPasswordLength(value){
+    const lengthDisplay = document.getElementById('lengthDisplay');
+    /* function adjustPasswordLength(value){
         if(value > 30){
-            lengthInput.value = 30;
+            //lengthInput.value = 30;
             rangeInput.value = 30;
-        } else if(value < 4){
+        } else if(value < 0){
             lengthInput.value = 8;
             rangeInput.value = 8;
         } else{
@@ -17,16 +17,17 @@ document.addEventListener('DOMContentLoaded', function() {
             rangeInput.value = value;
             lengthInput.value = value;
         }
-    }
+    } */
 
-    lengthInput.addEventListener('input', function(){
+    /* lengthInput.addEventListener('input', function(){
         let value = parseInt(this.value, 10);
         adjustPasswordLength(value);
-    });
+    }); */
 
     rangeInput.addEventListener('input', function(){
         let value = parseInt(this.value, 10);
-        adjustPasswordLength(value);
+        lengthDisplay.textContent = value;
+        //adjustPasswordLength(value);
     });
 
     // uppercase, lowercase, numbers, symbols
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function generatePassword(){
         // Initialize the length of the password based user's selection or set 8 as default
-        const length = document.getElementById('pwdlength').value || 8;
+        const length = document.getElementById('rangeInput').value || 8;
 
         // The character type preferences
         const useUppercase = document.getElementById('uppercase').checked;

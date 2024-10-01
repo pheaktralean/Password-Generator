@@ -32,6 +32,10 @@ def password_generator(length=8, use_uppercase=True, use_lowercase=True, use_num
         password.append(random.choice(symbols))
         char_pool += symbols
 
+    if length < len(password):
+        random.shuffle(password)
+        return ''.join(password[:length])
+
     for _ in range(length - len(password)):
         password.append(random.choice(char_pool))
 
