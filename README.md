@@ -5,5 +5,14 @@
 <h4>Features</h4>
 <ul>
   <li><b>Password Length Selection:</b> User can select the desired password length, ranging from 4 to 30 characters</li>
-  <li></li>
+  <li><b>Character Types:</b> Users can customize their password by selecting any comibination of: 
+  <ul>
+    <li>Uppercase Letters</li>
+    <li>Lowercase Letters</li>
+    <li><Numbers/li>
+    <li>Symbols</li>
+  </ul>
+  </li>
+  <li><b>Copy and Generate: </b> User can copy the generated password to their clipboard and generate new ones with ease</li>
+  <li><b>Responsive Design:</b> The site is designed to be responsive, ensuring an optimal experience on both desktop and mobile devices.</li>
 </ul>
