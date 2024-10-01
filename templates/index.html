@@ -16,10 +16,10 @@
             <!--Password length input-->
             <div class="length">
                 <label for="pwdlength">Length:</label><br>
-                <input type="number" id="pwdlength" name="pwdlength" min="1" max="30" value="8">
+                <input type="number" id="pwdlength" name="pwdlength" min="4" max="30" value="8">
                 <br>
                 <label for="rangeInput"></label>
-                <input type="range" id="rangeInput" min="1" max="30" value="8">
+                <input type="range" id="rangeInput" min="4" max="30" value="8">
             </div>
 
             <!-- Character type selection checkboxes -->
@@ -38,16 +38,14 @@
             </div>
 
         </div>
+        <button class="button" id="generate-button">Generate Password</button>
 
         <!-- Password display and action buttons -->
         <div class="password-container">
             <div id="password-display" class="password">pass1234</div>
-            <button class="icon" id="copy-icon">⧉</button>
-            <button class="icon" id="generate-icon">&#x21bb;</button>
-
         </div>
-        <button class="button" id="copy-button">Copy Password</button>
 
+        <button class ="button" id="copy-button">Copy Password</button>
         <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 </html>

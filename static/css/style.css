@@ -17,10 +17,10 @@ h4{
 }
 .container{
     background-color: white;
-    width: 500px;
-    height: 400px;
+    width: 400px;
+    height: 350px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 15px;
     border: 1px shadow black;
     border-radius: 10px;
     box-shadow: 0 0 2px black;
@@ -72,7 +72,7 @@ input[type="checkbox"]{
     padding-left: 40px;
     cursor: pointer;
     font-size: 18px;
-    line-height: 50px;
+    line-height: 40px;
     user-select: none;
 }
 .custom-checkbox label:before{
@@ -112,8 +112,8 @@ input:checked + label:after {
     justify-content: right;
     align-items: center;
     background-color: white;
-    width: 500px;
-    height: 50px;
+    width: 400px;
+    height: 40px;
     margin: 20px auto 20px auto;
     padding: 20px;
     border: 1px shadow black;
@@ -143,21 +143,62 @@ input:checked + label:after {
 }
 
 .button{
+     font-size: 18px;
+     width: 430px;
+     height: 50px;
      display: block;
-     margin: 0 auto;
+     margin: 20px auto;
      padding: 15px;
      background-color: rgb(56, 123, 194);
      color: white;
-     border:1px solid grey;
+     border:1px solid black;
      cursor: pointer;
      border-radius: 5px;
 }
 .button:hover {
      background-color: #316ba8;
 }
-#generated-password {
-     margin-top: 20px;
-     font-size: 1.2em;
-     color: green;
-     word-wrap: break-word;
+
+
+@media only screen and (max-width: 480px) {
+     .container, .password-container {
+        width: 80%;
+        height: auto;
+        padding: 15px;
+    }
+
+    h3 {
+        font-size: 22px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+
+    input[type="number"] {
+        width: 30%;
+        font-size: 16px;
+        height: 40px;
+    }
+    input[type="range"]{
+        width = 100%
+    }
+
+    .icon {
+        width: 30px;
+        height: 30px;
+        font-size: 20px; /* Adjust icon size for mobile */
+    }
+
+    .button {
+        width: 85%;
+        height: 50px;
+        font-size: 14px;
+    }
+
+    .password {
+        font-size: 16px; /* Adjust password text size */
+    }
+
+
 }

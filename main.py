@@ -18,17 +18,27 @@ symbols = config['character_sets']['symbols']['chars']
 # default password generator function
 def password_generator(length=8, use_uppercase=True, use_lowercase=True, use_numbers=True, use_symbols=True):
     char_pool = ''
+    password = []
     if use_uppercase:
+        password.append(random.choice(upper_chars))
         char_pool += upper_chars
     if use_lowercase:
+        password.append(random.choice(lower_chars))
         char_pool += lower_chars
     if use_numbers:
+        password.append(random.choice(numbers))
         char_pool += numbers
     if use_symbols:
+        password.append(random.choice(symbols))
         char_pool += symbols
 
-    password = ''.join(random.choice(char_pool) for _ in range(length))
-    return password
+    for _ in range(length - len(password)):
+        password.append(random.choice(char_pool))
+
+    #password = ''.join(random.choice(char_pool) for _ in range(length))
+    random.shuffle(password)
+
+    return ''.join(password)
 
 
 # (password_generator(length=12, use_uppercase=True, use_lowercase=True, use_numbers=True, use_symbols=True))

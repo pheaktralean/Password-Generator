@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if(value > 30){
             lengthInput.value = 30;
             rangeInput.value = 30;
-        } else if(value < 0){
+        } else if(value < 4){
             lengthInput.value = 8;
             rangeInput.value = 8;
         } else{
@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Attach event listeners to both icons and button
-    document.getElementById('generate-icon').addEventListener('click', generatePassword);
-    document.getElementById('copy-icon').addEventListener('click', copyToClipboard);
     document.getElementById('copy-button').addEventListener('click', copyToClipboard);
+    // document.getElementById('copy-icon').addEventListener('click', copyToClipboard);
+    document.getElementById('generate-button').addEventListener('click', generatePassword);
 
 });
